@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../static/admin-analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <!-- Боковая панель -->
+    <aside>
+        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <nav class="nav-menu">
+            <a href="admin.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Главная</span>
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Пользователи</span>
+            </a>
+            <a href="admin-posts.html" class="nav-item">
+                <i class="fas fa-newspaper"></i>
+                <span>Посты</span>
+            </a>
+            <a href="admin-comments.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Комментарии</span>
+            </a>
+            <a href="admin-analytics.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Аналитика</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Шапка -->
+    <header>
+        <h1 class="admin-title">Аналитика платформы</h1>
+        <div class="admin-user">
+            <div class="user-avatar">АД</div>
+            <span>Администратор</span>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <div class="analytics-header">
+            <h2 class="analytics-title">Обзор статистики</h2>
+            <div class="date-filter">
+                <button class="filter-btn active">Сегодня</button>
+                <button class="filter-btn">Неделя</button>
+                <button class="filter-btn">Месяц</button>
+                <button class="filter-btn">Год</button>
+                <div class="custom-date">
+                    <input type="date" class="date-input">
+                    <span>-</span>
+                    <input type="date" class="date-input">
+                    <button class="apply-btn">Применить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточки статистики -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Новых пользователей</div>
+                <div class="stat-value">124</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i>
+                    +12% за неделю
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Активных пользователей</div>
+                <div class="stat-value">856</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i>
+                    +5% за неделю
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Создано постов</div>
+                <div class="stat-value">342</div>
+                <div class="stat-change down">
+                    <i class="fas fa-arrow-down"></i>
+                    -3% за неделю
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Комментариев</div>
+                <div class="stat-value">1,245</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i>
+                    +8% за неделю
+                </div>
+            </div>
+        </div>
+
+        <!-- Графики -->
+        <div class="chart-container">
+            <h3 class="chart-title">Активность пользователей</h3>
+            <div class="chart-placeholder">
+                [График активности пользователей за выбранный период]
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3 class="chart-title">Создание постов по категориям</h3>
+            <div class="chart-placeholder">
+                [Круговая диаграмма распределения постов по категориям]
+            </div>
+        </div>
+
+        <!-- Таблицы -->
+        <div class="tables-grid">
+            <div class="table-container">
+                <h3 class="table-title">Топ пользователей</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Пользователь</th>
+                            <th>Посты</th>
+                            <th>Лайки</th>
+                            <th>Рейтинг</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="user-avatar-small">ИИ</span>
+                                Иван Иванов
+                            </td>
+                            <td>42</td>
+                            <td>1,245</td>
+                            <td>4.8</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="user-avatar-small">АП</span>
+                                Анна Петрова
+                            </td>
+                            <td>38</td>
+                            <td>987</td>
+                            <td>4.7</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="user-avatar-small">СС</span>
+                                Сергей Сидоров
+                            </td>
+                            <td>35</td>
+                            <td>856</td>
+                            <td>4.5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="user-avatar-small">ММ</span>
+                                Мария Морозова
+                            </td>
+                            <td>28</td>
+                            <td>754</td>
+                            <td>4.3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h3 class="table-title">Популярные посты</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Заголовок</th>
+                            <th>Автор</th>
+                            <th>Просмотры</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Новые космические технологии</td>
+                            <td>Иван Иванов</td>
+                            <td>5,245</td>
+                            <td><a href="#" class="view-btn">Просмотр</a></td>
+                        </tr>
+                        <tr>
+                            <td>Исследование Марса 2023</td>
+                            <td>Анна Петрова</td>
+                            <td>4,876</td>
+                            <td><a href="#" class="view-btn">Просмотр</a></td>
+                        </tr>
+                        <tr>
+                            <td>Спутники нового поколения</td>
+                            <td>Сергей Сидоров</td>
+                            <td>3,954</td>
+                            <td><a href="#" class="view-btn">Просмотр</a></td>
+                        </tr>
+                        <tr>
+                            <td>Космический туризм</td>
+                            <td>Мария Морозова</td>
+                            <td>3,542</td>
+                            <td><a href="#" class="view-btn">Просмотр</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="../static/admin-analytics.js"></script>
+</body>
+</html>

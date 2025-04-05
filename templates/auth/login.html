@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="container">
+        <div class="form-container">
+            <h1 class="form-title">Вход в аккаунт</h1>
+            {% if show_success %}
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Вход выполнен успешно!</h2>
+                    <p>Перенаправляем вас в личный кабинет...</p>
+                </div>
+                <script>
+                    setTimeout(() => {
+                        window.location.href = "{% url 'home' %}";
+                    }, 2000);
+                </script>
+            {% else %}
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" placeholder=" " required>
+                        <label for="password">Пароль</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Войти</button>
+                </form>
+            </form>
+            <div class="additional-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Запомнить меня</label>
+                </div>
+                
+                <!-- Ссылка на восстановление пароля -->
+                <div class="forgot-password">
+                    <a href="{% url 'forgot_password' %}">Забыли пароль?</a>
+                </div>
+            </div>
+            <!-- Ссылка на регистрацию -->
+            <div class="register-link">
+                Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление постами | Научные Новости</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../static/admin-posts.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <!-- Боковая панель -->
+    <aside>
+        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <nav class="nav-menu">
+            <a href="admin.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Главная</span>
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Пользователи</span>
+            </a>
+            <a href="admin-posts.html" class="nav-item active">
+                <i class="fas fa-newspaper"></i>
+                <span>Посты</span>
+            </a>
+            <a href="admin-comments.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Комментарии</span>
+            </a>
+            <a href="admin-analytics.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Аналитика</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Шапка -->
+    <header>
+        <h1 class="admin-title">Управление постами</h1>
+        <div class="admin-user">
+            <div class="user-avatar">АД</div>
+            <span>Администратор</span>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <div class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">Список постов</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" id="addPostBtn">
+                        <i class="fas fa-plus"></i>
+                        Добавить пост
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i>
+                        Экспорт
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-filter">
+                <input type="text" class="search-input" placeholder="Поиск по названию или автору...">
+                <select class="filter-select">
+                    <option value="">Все статусы</option>
+                    <option value="published">Опубликовано</option>
+                    <option value="draft">Черновик</option>
+                    <option value="moderation">На модерации</option>
+                    <option value="archived">Архив</option>
+                    <option value="rejected">Отклонено</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">Все категории</option>
+                    <option value="physics">Физика</option>
+                    <option value="biology">Биология</option>
+                    <option value="chemistry">Химия</option>
+                    <option value="space">Космос</option>
+                    <option value="technology">Технологии</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Автор</th>
+                            <th>Категория</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th>Просмотры</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Новые открытия в квантовой физике</td>
+                            <td>
+                                <span class="user-avatar-small">ИИ</span>
+                                Иван Иванов
+                            </td>
+                            <td><span class="category-badge category-physics">Физика</span></td>
+                            <td><span class="status-badge status-published">Опубликовано</span></td>
+                            <td>15.05.2023</td>
+                            <td>1,245</td>
+                            <td>
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Генетические модификации растений</td>
+                            <td>
+                                <span class="user-avatar-small">АП</span>
+                                Анна Петрова
+                            </td>
+                            <td><span class="category-badge category-biology">Биология</span></td>
+                            <td><span class="status-badge status-draft">Черновик</span></td>
+                            <td>12.05.2023</td>
+                            <td>0</td>
+                            <td>
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Новые материалы для солнечных батарей</td>
+                            <td>
+                                <span class="user-avatar-small">СС</span>
+                                Сергей Сидоров
+                            </td>
+                            <td><span class="category-badge category-chemistry">Химия</span></td>
+                            <td><span class="status-badge status-moderation">Модерация</span></td>
+                            <td>10.05.2023</td>
+                            <td>320</td>
+                            <td>
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Экзопланеты в зоне обитаемости</td>
+                            <td>
+                                <span class="user-avatar-small">ММ</span>
+                                Мария Морозова
+                            </td>
+                            <td><span class="category-badge category-space">Космос</span></td>
+                            <td><span class="status-badge status-published">Опубликовано</span></td>
+                            <td>08.05.2023</td>
+                            <td>890</td>
+                            <td>
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Искусственный интеллект в медицине</td>
+                            <td>
+                                <span class="user-avatar-small">АК</span>
+                                Алексей Козлов
+                            </td>
+                            <td><span class="category-badge category-technology">Технологии</span></td>
+                            <td><span class="status-badge status-rejected">Отклонено</span></td>
+                            <td>05.05.2023</td>
+                            <td>2,150</td>
+                            <td>
+                                <button class="action-btn view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn">3</div>
+                <div class="page-btn">...</div>
+                <div class="page-btn">10</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно добавления/редактирования поста -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Добавить пост</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <form id="postForm">
+                <div class="form-group">
+                    <label class="form-label">Название поста</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Автор</label>
+                    <select class="form-control" required>
+                        <option value="1">Иван Иванов</option>
+                        <option value="2">Анна Петрова</option>
+                        <option value="3">Сергей Сидоров</option>
+                        <option value="4">Мария Морозова</option>
+                        <option value="5">Алексей Козлов</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Категория</label>
+                    <select class="form-control" required>
+                        <option value="physics">Физика</option>
+                        <option value="biology">Биология</option>
+                        <option value="chemistry">Химия</option>
+                        <option value="space">Космос</option>
+                        <option value="technology">Технологии</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Статус</label>
+                    <select class="form-control" required>
+                        <option value="published">Опубликовано</option>
+                        <option value="draft">Черновик</option>
+                        <option value="moderation">На модерации</option>
+                        <option value="archived">Архив</option>
+                        <option value="rejected">Отклонено</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Изображение</label>
+                    <input type="file" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Содержание</label>
+                    <textarea class="form-control form-textarea" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Теги (через запятую)</label>
+                    <input type="text" class="form-control" placeholder="наука, физика, исследования">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelBtn">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../static/admin-posts.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление пользователями</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/admin-users.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <!-- Боковая панель -->
+    <aside>
+        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <nav class="nav-menu">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Главная</span>
+            </a>
+            <a href="admin-users.html" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>Пользователи</span>
+            </a>
+            <a href="admin-posts.html" class="nav-item">
+                <i class="fas fa-newspaper"></i>
+                <span>Посты</span>
+            </a>
+            <a href="admin-comments.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Комментарии</span>
+            </a>
+            <a href="admin-analytics.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Аналитика</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Шапка -->
+    <header>
+        <h1 class="admin-title">Управление пользователями</h1>
+        <div class="admin-user">
+            <div class="user-avatar">АД</div>
+            <span>Администратор</span>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <div class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">Список пользователей</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" id="addUserBtn">
+                        <i class="fas fa-plus"></i>
+                        Добавить пользователя
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i>
+                        Экспорт
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-filter">
+                <form method="GET" action="{% url 'admin_users' %}">
+                    <input type="text" class="search-input" placeholder="Поиск по email..." name="email" value="{{ request.GET.email }}">
+                    <select class="filter-select" name="status">
+                        <option value="">Все статусы</option>
+                        <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Активные</option>
+                        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Ожидают</option>
+                        <option value="banned" {% if request.GET.status == 'banned' %}selected{% endif %}>Заблокированные</option>
+                    </select>
+                    <select class="filter-select" name="role">
+                        <option value="">Все роли</option>
+                        <option value="user" {% if request.GET.role == 'user' %}selected{% endif %}>Пользователь</option>
+                        <option value="expert" {% if request.GET.role == 'expert' %}selected{% endif %}>Эксперт</option>
+                        <option value="moderator" {% if request.GET.role == 'moderator' %}selected{% endif %}>Модератор</option>
+                        <option value="admin" {% if request.GET.role == 'admin' %}selected{% endif %}>Администратор</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                </form>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Email</th>
+                            <th>Роль</th>
+                            <th>Статус</th>
+                            <th>Дата регистрации</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in page_obj %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>
+                                    <span class="user-avatar-small">{{ user.first_name|slice:":2" }}{{ user.last_name|slice:":2" }}</span>
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.get_role_display }}</td>  <!-- Отображение роли -->
+                                <td><span class="status-badge {% if user.is_active == 'active' %}status-active{% elif user.is_active == 'banned' %}status-banned{% else %}status-pending{% endif %}">{{ user.get_is_active_display }}</span></td>
+                                <td>{{ user.created_at|date:"d.m.Y" }}</td>
+                                <td>
+                                    <button class="action-btn edit" data-id="{{ user.id }}" data-name="{{ user.name }}" data-email="{{ user.email }}" data-role="{{ user.role }}" data-status="{{ user.is_active }}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <a href="{% url 'delete_user' user.id %}" class="action-btn delete">Удалить</a>
+                                    
+                                </td>
+                            </tr>
+                            <div class="modal" id="userModal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="modalTitle">Добавить пользователя</h3>
+                                        <button class="modal-close" id="modalClose">&times;</button>
+                                    </div>
+                                    <form id="userForm">
+                                        <input type="hidden" id="userId"> <!-- Скрытое поле для ID пользователя -->
+                                        <div class="form-group">
+                                            <label class="form-label">Имя</label>
+                                            <input type="text" class="form-control" id="userName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Фамилия</label>
+                                            <input type="text" class="form-control" id="userLastName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="userEmail" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Роль</label>
+                                            <select class="form-control" id="userRole" required>
+                                                <option value="user">Пользователь</option>
+                                                <option value="expert">Эксперт</option>
+                                                <option value="moderator">Модератор</option>
+                                                <option value="admin">Администратор</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Статус</label>
+                                            <select class="form-control" id="userStatus" required>
+                                                <option value="active">Активный</option>
+                                                <option value="pending">Ожидает подтверждения</option>
+                                                <option value="banned">Заблокирован</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Пароль</label>
+                                            <input type="password" class="form-control" id="passwordInput" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline" id="cancelBtn">Отмена</button>
+                                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a class="page-btn" href="?page=1">&laquo; Первая</a>
+                    <a class="page-btn" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                {% endif %}
+                
+                <span class="page-btn active">{{ page_obj.number }}</span>
+                
+                {% if page_obj.has_next %}
+                    <a class="page-btn" href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                    <a class="page-btn" href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/admin-users.js' %}"></script>
+</body>
+</html>

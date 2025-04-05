@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <div class="container">
+        <div class="form-container">
+            <h1 class="form-title">Создать аккаунт</h1>
+
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                <!-- Поле для имени -->
+                <div class="input-group">
+                    <input type="text" name="name" id="name" placeholder=" " value="{{ form.name.value|default:'' }}" class="form-input">
+                    <label for="name" class="form-label">Имя</label>
+                    {{ form.name.errors }}
+                </div>
+            
+                <!-- Поле для email -->
+                <div class="input-group">
+                    <input type="email" name="email" id="email" placeholder=" " value="{{ form.email.value|default:'' }}" class="form-input">
+                    <label for="email" class="form-label">Email</label>
+                    {{ form.email.errors }}
+                </div>
+            
+                <!-- Поле для username -->
+                <div class="input-group">
+                    <input type="text" name="username" id="username" placeholder=" " value="{{ form.username.value|default:'' }}" class="form-input">
+                    <label for="username" class="form-label">Имя пользователя</label>
+                    {{ form.username.errors }}
+                </div>
+            
+                <!-- Поле для пароля -->
+                <div class="input-group">
+                    <input type="password" name="password" id="password" placeholder=" " value="{{ form.password.value|default:'' }}" class="form-input">
+                    <label for="password" class="form-label">Пароль</label>
+                    {{ form.password.errors }}
+                </div>
+            
+                <!-- Поле для подтверждения пароля -->
+                <div class="input-group">
+                    <input type="password" name="confirm_password" id="confirmPassword" placeholder=" " value="{{ form.confirm_password.value|default:'' }}" class="form-input">
+                    <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+                    {{ form.confirm_password.errors }}
+                </div>
+            
+                <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            </form>
+            
+
+            <div class="login-link">
+                Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
+</body>
+</html>

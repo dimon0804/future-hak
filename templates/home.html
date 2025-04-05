@@ -1,0 +1,13 @@
+{% if show_success %}
+    <div class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <h2>Вход выполнен успешно!</h2>
+        <p>Перенаправляем вас в личный кабинет...</p>
+    </div>
+    <script>
+        setTimeout(() => {
+            window.location.href = "{% url 'home' %}";
+        }, 50000); // редирект через 2 секунды
+    </script>
+{% endif %}
+пррр
