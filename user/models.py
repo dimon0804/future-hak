@@ -5,20 +5,24 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Playlist(models.Model):
-    id = models.AutoField(primary_key=True, verbose_name='ID плейлиста')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='ID пользователя')
-    title = models.CharField(max_length=200, verbose_name='Название')
-    description = models.TextField(blank=True, null=True, verbose_name='Краткое описание')
-    cover_image = models.ImageField(upload_to='playlists/covers/', blank=True, null=True, verbose_name='Обложка')
-    created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # 1 is an example of a default user id
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    cover_image = models.CharField(
+    max_length=50,
+    choices=[
+        ('atom', 'Атом'),
+        ('dna', 'ДНК'),
+        ('rocket', 'Ракета'),
+        ('flask', 'Колба'),
+        ('microscope', 'Микроскоп')
+    ],
+    default='atom'  # Provide a default value (e.g., 'atom' or another valid cover)
+)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
-    class Meta:
-        verbose_name = 'Плейлист'
-        verbose_name_plural = 'Плейлисты'
-        ordering = ['-created_at']
 
 
 class PlaylistArticle(models.Model):

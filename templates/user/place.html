@@ -33,68 +33,28 @@
 
         <!-- Список плейлистов -->
         <div class="playlists-grid">
-            <!-- Плейлист 1 -->
-            <div class="playlist-card">
-                <div class="playlist-cover">
-                    <i class="fas fa-atom"></i>
-                </div>
-                <div class="playlist-info">
-                    <h3 class="playlist-title">Квантовая физика</h3>
-                    <div class="playlist-meta">5 статей · Последнее обновление: 15.05.2023</div>
-                    <div class="playlist-actions">
-                        <a href="#" class="action-btn view">
-                            <i class="fas fa-eye"></i>
-                            Просмотр
-                        </a>
-                        <a href="#" class="action-btn share">
-                            <i class="fas fa-share-alt"></i>
-                            Поделиться
-                        </a>
+            {% for item in playlist_data %}
+                {% with playlist=item.playlist articles=item.articles %}
+                <div class="playlist-card">
+                    <div class="playlist-cover">
+                        <!-- тут можно вставить иконку из playlist.cover_image -->
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="playlist-info">
+                        <h3 class="playlist-title">{{ playlist.title }}</h3>
+                        <div class="playlist-meta">{{ articles|length }} статей.</div>
+                        <div class="playlist-actions">
+                            <a href="#" class="action-btn share">
+                                <i class="fas fa-share-alt"></i>
+                                Поделиться
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Плейлист 2 -->
-            <div class="playlist-card">
-                <div class="playlist-cover">
-                    <i class="fas fa-dna"></i>
-                </div>
-                <div class="playlist-info">
-                    <h3 class="playlist-title">Генетика будущего</h3>
-                    <div class="playlist-meta">8 статей · Последнее обновление: 10.05.2023</div>
-                    <div class="playlist-actions">
-                        <a href="#" class="action-btn view">
-                            <i class="fas fa-eye"></i>
-                            Просмотр
-                        </a>
-                        <a href="#" class="action-btn share">
-                            <i class="fas fa-share-alt"></i>
-                            Поделиться
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Плейлист 3 -->
-            <div class="playlist-card">
-                <div class="playlist-cover">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <div class="playlist-info">
-                    <h3 class="playlist-title">Космические исследования</h3>
-                    <div class="playlist-meta">12 статей · Последнее обновление: 05.05.2023</div>
-                    <div class="playlist-actions">
-                        <a href="#" class="action-btn view">
-                            <i class="fas fa-eye"></i>
-                            Просмотр
-                        </a>
-                        <a href="#" class="action-btn share">
-                            <i class="fas fa-share-alt"></i>
-                            Поделиться
-                        </a>
-                    </div>
-                </div>
-            </div>
+                {% endwith %}
+            {% empty %}
+                <p>У вас нет плейлистов.</p>
+            {% endfor %}
         </div>
     </div>
 
@@ -105,18 +65,19 @@
                 <h3 class="modal-title">Создать новый плейлист</h3>
                 <button class="modal-close" id="modalClose">&times;</button>
             </div>
-            <form id="playlistForm">
+            <form id="playlistForm" method="POST" action="{% url 'create_playlist' %}">
+                {% csrf_token %}
                 <div class="form-group">
                     <label class="form-label">Название плейлиста</label>
-                    <input type="text" class="form-control" placeholder="Например: Квантовая физика" required>
+                    <input type="text" name="title" class="form-control" placeholder="Например: Квантовая физика" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Описание (необязательно)</label>
-                    <textarea class="form-control" rows="3" placeholder="Краткое описание вашего плейлиста"></textarea>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Краткое описание вашего плейлиста"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Обложка</label>
-                    <select class="form-control">
+                    <select name="cover_image" class="form-control">
                         <option value="atom"><i class="fas fa-atom"></i> Атом</option>
                         <option value="dna"><i class="fas fa-dna"></i> ДНК</option>
                         <option value="rocket"><i class="fas fa-rocket"></i> Ракета</option>
@@ -129,6 +90,38 @@
                     <button type="submit" class="action-btn view">Создать</button>
                 </div>
             </form>
+        </div>
+    </div>
+    
+    <script>
+        // Функция для отправки формы через AJAX
+        document.getElementById('playlistForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            var formData = new FormData(this);
+            
+            fetch("{% url 'create_playlist' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')  // Убедись, что csrf токен добавлен
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    // Здесь можно добавить код для обновления списка плейлистов
+                    location.reload();  // Обновляем страницу, чтобы отобразить новый плейлист
+                } else {
+                    alert('Произошла ошибка при создании плейлиста');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+    </script>
         </div>
     </div>
 

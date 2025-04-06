@@ -27,7 +27,31 @@
     text-decoration: none;
     transition: background-color 0.3s;
 }
+.ad-image {
+    transition: opacity 0.3s ease;
+}
 
+.default-image {
+    transition: opacity 0.4s ease;
+    backface-visibility: hidden; /* Фикс для плавности */
+}
+
+/* Гарантированное восстановление изображений */
+body:not(.dark-mode) .default-image[data-light-src] {
+    content: url(attr(data-light-src));
+}
+
+body.dark-mode .default-image[data-dark-src] {
+    content: url(attr(data-dark-src));
+}
+.default-image {
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+body.dark-mode .default-image {
+    opacity: 0.9;
+}
 .admin-btn:hover {
     background-color: #c82333;
 }
@@ -427,15 +451,21 @@ footer {
 }
 
 .settings-option {
-    padding: 8px 0;
-    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
 .settings-option:hover {
     color: var(--primary-color);
+    background-color: white;
 }
 
 /* Адаптивность */

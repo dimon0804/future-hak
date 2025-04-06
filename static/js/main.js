@@ -11,17 +11,31 @@ if (settingsBtn && settingsMenu) {
 // Тёмная тема
 const darkModeToggle = document.getElementById('darkModeToggle');
 const body = document.body;
+const themeIcon = darkModeToggle ? darkModeToggle.querySelector('i') : null;
 
-if (darkModeToggle) {
-    // Проверяем сохранённую тему
+function updateThemeImages() {
+    const isDark = document.body.classList.contains('dark-mode');
+    const defaultImages = document.querySelectorAll('.default-image');
+    
+    defaultImages.forEach(img => {
+        // Получаем оригинальные пути из data-атрибутов
+        const lightSrc = img.dataset.lightSrc || "{% static 'images/def.png' %}";
+        const darkSrc = img.dataset.darkSrc || "{% static 'images/def-dark.png' %}";
+        
+        // Принудительно обновляем src
+        img.src = isDark ? darkSrc : lightSrc;
+    });
+}
+
+if (darkModeToggle && themeIcon) {
+    // Проверяем сохранённую тему при загрузке
     if (localStorage.getItem('darkMode') === 'enabled') {
         body.classList.add('dark-mode');
     }
-    // Вызываем при загрузке страницы
-    updateThemeImages();}
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', updateThemeImages);
-
+    
+    // Обновляем изображения и иконку при загрузке
+    updateThemeImages();
+    
     darkModeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
         
@@ -31,6 +45,9 @@ if (darkModeToggle) {
         } else {
             localStorage.setItem('darkMode', 'disabled');
         }
+        
+        // Обновляем изображения и иконку
+        updateThemeImages();
     });
 }
 
@@ -93,14 +110,25 @@ if (applyBtn) {
     });
 }
 // Функция для обновления изображений при смене темы
-function updateThemeImages() {
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const defaultImages = document.querySelectorAll('.default-image');
-    
-    defaultImages.forEach(img => {
-        const darkSrc = img.getAttribute('data-dark-src');
-        if (darkSrc) {
-            img.src = isDarkMode ? darkSrc : img.getAttribute('src');
-        }
-    });
-}
+
+document.addEventListener('DOMContentLoaded', function() {
+    function updateThemeImages() {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const defaultImages = document.querySelectorAll('.default-image');
+        
+        defaultImages.forEach(img => {
+            const darkSrc = img.getAttribute('data-dark-src');
+            if (darkSrc) {
+                img.src = isDarkMode ? darkSrc : img.getAttribute('src');
+            }
+        });
+    }
+
+    // Принудительное обновление после загрузки страницы
+    setTimeout(updateThemeImages, 100);
+});
+
+window.addEventListener('load', function() {
+    // Двойная проверка после полной загрузки
+    updateThemeImages();
+});

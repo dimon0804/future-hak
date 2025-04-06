@@ -4,6 +4,8 @@ from dashboard.models import Post, Comment
 from django.contrib.auth.models import User
 from accounts.models import CustomUser
 from .models import Playlist, PlaylistArticle
+from django.http import JsonResponse
+from .forms import PlaylistForm
 
 # Create your views here.
 def my_profile(request):
@@ -106,12 +108,31 @@ def list_place(request):
         })
     
     # Передаем плейлисты и статьи в контекст
-    return render(request, 'user/list-place.html', {'playlist_data': playlist_data})
+    return render(request, 'user/place.html', {'playlist_data': playlist_data})
 
 
-# def post_list(request):
-#     posts = Post.objects.all().order_by('-created_at')
-#     context = {
-#         'posts': posts,
-#     }
-#     return render(request, 'post_list.html', context)
+def create_playlist(request):
+    if request.method == "POST":
+        form = PlaylistForm(request.POST)
+        if form.is_valid():
+            # Устанавливаем пользователя
+            playlist = form.save(commit=False)
+            playlist.user = request.user  # Устанавливаем пользователя как текущего
+            playlist.save()
+
+            # Проверка на AJAX-запрос
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Плейлист успешно создан',
+                    'playlist_id': playlist.id,
+                    'playlist_title': playlist.title,
+                })
+
+            # Перенаправляем на страницу с плейлистами
+            return redirect('main')
+
+    return JsonResponse({'status': 'error', 'message': 'Ошибка при создании плейлиста'}, status=400)
+
+def post_list(request, place_id):
+    return render(request, 'user/list-place.html')

@@ -17,6 +17,8 @@
             <i class="fas fa-moon"></i>
             <span>Тёмная тема</span>
         </div>
+        <a href="{% url 'add_post' %}" class="settings-option">Создать пост</a>
+        <a href="{% url 'list_place' %}" class="settings-option">Плейлисты</a>
         {% if user.is_authenticated %}
         <!-- Меню пользователя (видимо когда пользователь авторизован) -->
         <div class="user-menu" id="userMenu">
@@ -35,6 +37,8 @@
                     {{ user.username|first|upper }}
                 {% endif %}
             </div>
+
+            
         </div>
         
         <!-- Меню настроек -->
@@ -77,10 +81,11 @@
         {% if post.image %}
             <img src="{{ post.image }}" alt="Объявление" class="ad-image">
                     {% else %}
-                        <img src="{% static 'images/def.png' %}" 
-                            data-dark-src="{% static 'images/def-dark.png' %}" 
-                            alt="Объявление по умолчанию" 
-                            class="ad-image default-image">
+                        <img src="{% static 'images/def.png' %}"
+                        data-light-src="{% static 'images/def.png' %}"
+                        data-dark-src="{% static 'images/def-dark.png' %}"
+                        alt="Объявление по умолчанию"
+                        class="ad-image default-image">
                     {% endif %}
                     <div class="ad-content">
                         <!-- /profile/post/{{ post.id }} -->

@@ -1,11 +1,10 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Плейлист | ScienceNews</title>
+    <title>Плейлист "Квантовая физика" | ScienceNews</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="{% static 'css/list-place.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -16,68 +15,99 @@
         <a href="main.html" class="logo">ScienceNews</a>
         <button class="profile-btn">
             <a href="profile.html" class="logo">
-                <div class="profile-avatar">ИИ</div>
-                <span>Иван Иванов</span>
+            <div class="profile-avatar">ИИ</div>
+            <span>Иван Иванов</span>
             </a>
         </button>
     </nav>
 
     <div class="container">
-        {% for playlist_data in playlist_data %}
-            <!-- Шапка плейлиста -->
-            <div class="playlist-header">
-                <div class="playlist-icon">
-                    <i class="fas fa-atom"></i>
+        <!-- Шапка плейлиста -->
+        <div class="playlist-header">
+            <div class="playlist-icon">
+                <i class="fas fa-atom"></i>
+            </div>
+            <h1 class="playlist-title">Квантовая физика</h1>
+            <div class="playlist-meta">5 статей · Создан 15.05.2023</div>
+            <p class="playlist-description">
+                Подборка лучших статей о последних достижениях в области квантовой физики, квантовых вычислений и перспективных технологиях будущего.
+            </p>
+            <div class="playlist-actions">
+                <button class="btn btn-outline">
+                    <i class="fas fa-edit"></i>
+                    Редактировать
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-share-alt"></i>
+                    Поделиться
+                </button>
+            </div>
+        </div>
+
+        <!-- Список статей -->
+        <div class="articles-list">
+            <h2 class="section-title">
+                <i class="fas fa-newspaper"></i>
+                Статьи в плейлисте
+            </h2>
+
+            <!-- Статья 1 -->
+            <div class="article-card">
+                <div class="article-header">
+                    <span class="article-date">15.05.2023</span>
+                    <span class="article-category category-physics">Физика</span>
                 </div>
-                <h1 class="playlist-title">{{ playlist_data.playlist.title }}</h1>
-                <div class="playlist-meta">{{ playlist_data.articles.count }} статей · Создан {{ playlist_data.playlist.created_at|date:"d.m.Y" }}</div>
-                <p class="playlist-description">
-                    {{ playlist_data.playlist.description }}
+                <h3 class="article-title">Квантовая телепортация: новые рекорды</h3>
+                <p class="article-excerpt">
+                    Международная группа ученых добилась квантовой телепортации на расстояние 1200 км, установив новый рекорд. В статье рассматриваются принципы технологии и ее практическое применение для создания защищенных каналов связи.
                 </p>
-                <div class="playlist-actions">
-                    <button class="btn btn-outline">
-                        <i class="fas fa-edit"></i>
-                        Редактировать
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-share-alt"></i>
-                        Поделиться
-                    </button>
+                <div class="article-actions">
+                    <div class="article-author">
+                        <div class="author-avatar">СП</div>
+                        <span>Сергей Петров</span>
+                    </div>
+                    <a href="#" class="read-more">Читать статью</a>
                 </div>
             </div>
 
-            <!-- Список статей -->
-            <div class="articles-list">
-                <h2 class="section-title">
-                    <i class="fas fa-newspaper"></i>
-                    Статьи в плейлисте
-                </h2>
-
-                {% for article in playlist_data.articles %}
-                    <div class="article-card">
-                        <div class="article-header">
-                            <span class="article-date">{{ article.created_at|date:"d.m.Y" }}</span>
-                            <span class="article-category category-physics">{{ article.category }}</span>
-                        </div>
-                        <h3 class="article-title">{{ article.title }}</h3>
-                        <p class="article-excerpt">
-                            {{ article.content|truncatewords:20 }}
-                        </p>
-                        <div class="article-actions">
-                            <div class="article-author">
-                                <div class="author-avatar">{{ article.author.name|slice:":2" }}</div>
-                                <span>{{ article.author.name }}</span>
-                            </div>
-                            <a href="{% url 'post_detail' article.id %}" class="read-more">Читать статью</a>
-                        </div>
+            <!-- Статья 2 -->
+            <div class="article-card">
+                <div class="article-header">
+                    <span class="article-date">12.05.2023</span>
+                    <span class="article-category category-physics">Физика</span>
+                </div>
+                <h3 class="article-title">Квантовые компьютеры: прорыв года</h3>
+                <p class="article-excerpt">
+                    Компания IBM представила новый 512-кубитный квантовый процессор, способный решать задачи, недоступные классическим суперкомпьютерам. Обзор архитектуры и перспективы развития технологии.
+                </p>
+                <div class="article-actions">
+                    <div class="article-author">
+                        <div class="author-avatar">АК</div>
+                        <span>Анна Козлова</span>
                     </div>
-                {% empty %}
-                    <p>В этом плейлисте нет статей.</p>
-                {% endfor %}
+                    <a href="#" class="read-more">Читать статью</a>
+                </div>
             </div>
-        {% empty %}
-            <p>У вас нет плейлистов.</p>
-        {% endfor %}
+
+            <!-- Статья 3 -->
+            <div class="article-card">
+                <div class="article-header">
+                    <span class="article-date">10.05.2023</span>
+                    <span class="article-category category-physics">Физика</span>
+                </div>
+                <h3 class="article-title">Квантовая криптография для всех</h3>
+                <p class="article-excerpt">
+                    Ученые разработали первую коммерческую систему квантового распределения ключей, доступную для обычных предприятий. Как это работает и какие преимущества дает по сравнению с традиционными методами шифрования.
+                </p>
+                <div class="article-actions">
+                    <div class="article-author">
+                        <div class="author-avatar">МС</div>
+                        <span>Мария Сидорова</span>
+                    </div>
+                    <a href="#" class="read-more">Читать статью</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{% static 'js/list-place.js' %}"></script>

@@ -76,7 +76,7 @@ def parse_news():
 
                 post = Post(
                     title=title,
-                    author_id=21,
+                    author_id=1,
                     category=_map_category(category_ru),
                     status='published',
                     content=content,
@@ -138,7 +138,7 @@ def parse_news():
                     # Создание и сохранение поста
                     post = Post(
                         title=title,
-                        author_id=21,
+                        author_id=1,
                         category='academia',
                         status='published',
                         content=content,
@@ -207,7 +207,7 @@ def parse_news():
                 # Create post
                 post = Post(
                     title=title,
-                    author_id=21,  # Укажите нужный ID автора
+                    author_id=1,  # Укажите нужный ID автора
                     category=_map_category(category),
                     status='published',
                     content=summary,

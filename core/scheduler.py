@@ -7,7 +7,7 @@ import time
 def start(request):
     print("Scheduler started") 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(parse_news, 'interval', hours=12)
+    scheduler.add_job(parse_news, 'interval', minutes=1)
     scheduler.start()
 
     def job_listener(event):

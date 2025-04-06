@@ -520,3 +520,65 @@ def filter_posts(request):
         'selected_sites': sites,
     }
     return render(request, 'posts/list.html', context)
+
+from django.shortcuts import render
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Count
+# from accounts.models import F 
+from dashboard.models import Post, Comment
+
+def analytics_view(request):
+    # Получаем период из GET-параметров
+    period = request.GET.get('period', 'week')
+    
+    # Рассчитываем даты для фильтрации
+    today = timezone.now().date()
+    if period == 'week':
+        start_date = today - timedelta(days=7)
+    elif period == 'month':
+        start_date = today - timedelta(days=30)
+    elif period == 'year':
+        start_date = today - timedelta(days=365)
+    else:
+        start_date = None
+    
+    # Собираем статистику
+    stats = {
+        'new_users': {
+            'current': User.objects.filter(date_joined__date=today).count(),
+            'previous': User.objects.filter(date_joined__date=today-timedelta(days=7)).count(),
+        },
+        'active_users': {
+            'current': User.objects.filter(last_login__date=today).count(),
+            'previous': User.objects.filter(last_login__date=today-timedelta(days=7)).count(),
+        },
+        'posts': {
+            'current': Post.objects.filter(created_at__date=today).count(),
+            'previous': Post.objects.filter(created_at__date=today-timedelta(days=7)).count(),
+        },
+        'comments': {
+            'current': Comment.objects.filter(created_at__date=today).count(),
+            'previous': Comment.objects.filter(created_at__date=today-timedelta(days=7)).count(),
+        },
+        'posts_by_category': Post.objects.filter(created_at__gte=start_date).values('category__name').annotate(count=Count('id')) if start_date else []
+    }
+    
+    # Рассчитываем проценты изменений
+    for metric in stats:
+        if metric != 'posts_by_category':
+            current = stats[metric]['current']
+            previous = stats[metric]['previous']
+            if previous > 0:
+                change = ((current - previous) / previous) * 100
+                stats[metric]['change'] = round(change)
+            else:
+                stats[metric]['change'] = 0
+    
+    context = {
+        'stats': stats,
+        'selected_period': period,
+    }
+    return render(request, 'analytics.html', context)
+
+
