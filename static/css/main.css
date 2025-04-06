@@ -1,0 +1,468 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --text-color: #2c3e50;
+    --light-text: #7f8c8d;
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+}
+
+.dark-mode {
+    --primary-color: #3a86ff;
+    --secondary-color: #2667cc;
+    --text-color: #f8f9fa;
+    --light-text: #adb5bd;
+    --bg-color: #212529;
+    --card-bg: #343a40;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+.admin-btn {
+    color: #fff;
+    background-color: #dc3545;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.admin-btn:hover {
+    background-color: #c82333;
+}
+
+/* Стиль для аватара пользователя */
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    background-color: #4a6fa5;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Стиль для ссылок в меню настроек */
+.settings-option a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px 12px;
+    width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 250px 1fr 250px;
+    grid-template-areas:
+        "header header header"
+        "sidebar main filters"
+        "footer footer footer";
+}
+
+/* Шапка */
+header {
+    grid-area: header;
+    background-color: var(--card-bg);
+    padding: 15px 30px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-btn {
+    padding: 8px 15px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.login-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.login-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.register-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+}
+
+.register-btn:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.user-menu {
+    display: none;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+.settings-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Боковая панель */
+aside.sidebar {
+    grid-area: sidebar;
+    background-color: var(--card-bg);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.widget {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: var(--border-radius);
+}
+
+.widget-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.weather {
+    text-align: center;
+}
+
+.weather-icon {
+    font-size: 40px;
+    margin: 10px 0;
+    color: var(--primary-color);
+}
+
+.temperature {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.date-time {
+    text-align: center;
+}
+
+.time {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.date {
+    font-size: 16px;
+    color: var(--light-text);
+}
+
+/* Основное содержимое */
+main {
+    grid-area: main;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid var(--light-text);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ads-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.ad-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.ad-card:hover {
+    transform: translateY(-5px);
+}
+
+.ad-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.ad-content {
+    padding: 15px;
+}
+
+.ad-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.ad-description {
+    color: var(--light-text);
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.ad-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.author-name {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+/* Панель фильтров */
+aside.filters {
+    grid-area: filters;
+    background-color: var(--card-bg);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.filter-section {
+    margin-bottom: 25px;
+}
+
+.filter-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-option input {
+    accent-color: var(--primary-color);
+}
+
+.filter-option label {
+    color: var(--text-color);
+    cursor: pointer;
+}
+.subbtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    width: 140px;
+    height: 37px;
+    border-radius: 10px;
+}
+
+.subbtn:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Подвал */
+footer {
+    grid-area: footer;
+    background-color: var(--card-bg);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer-text {
+    color: var(--light-text);
+    margin-bottom: 15px;
+}
+
+.app-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.app-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.app-link:hover {
+    background-color: var(--secondary-color);
+}
+
+.app-link i {
+    font-size: 18px;
+}
+
+/* Настройки (выпадающее меню) */
+.settings-menu_m {
+    display: none;
+    position: absolute;
+    right: 30px;
+    top: 70px;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 15px;
+    width: 200px;
+    z-index: 1000;
+}
+
+.settings-menu_m.active {
+    display: block;
+}
+
+.settings-option {
+    padding: 8px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-option:hover {
+    color: var(--primary-color);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "main"
+            "filters"
+            "sidebar"
+            "footer";
+    }
+
+    aside.sidebar, aside.filters {
+        margin: 0 20px 20px;
+        border-radius: var(--border-radius);
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-buttons {
+        gap: 10px;
+    }
+
+    .auth-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}

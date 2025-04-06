@@ -15,7 +15,7 @@
 
     <!-- Боковая панель -->
     <aside>
-        <a id="logo" href="{% url 'home' %}"><div class="logo">ScienceNews</div></a>
+        <a id="logo" href="{% url 'main' %}"><div class="logo">ScienceNews</div></a>
         <nav class="nav-menu">
             <a href="#" class="nav-item active">
                 <i class="fas fa-tachometer-alt"></i>
@@ -25,15 +25,15 @@
                 <i class="fas fa-users"></i>
                 <span>Пользователи</span>
             </a>
-            <a href="{% url 'admin_posts' %}" class="nav-item">
+            <a href="{% url 'admin-posts' %}" class="nav-item">
                 <i class="fas fa-newspaper"></i>
                 <span>Посты</span>
             </a>
-            <a href="{% url 'admin_comments' %}" class="nav-item">
+            <a href="{% url 'admin-comments' %}" class="nav-item">
                 <i class="fas fa-comments"></i>
                 <span>Комментарии</span>
             </a>
-            <a href="{% url 'admin_analytics' %}" class="nav-item">
+            <a href="{% url 'admin-analytics' %}" class="nav-item">
                 <i class="fas fa-chart-line"></i>
                 <span>Аналитика</span>
             </a>
@@ -53,26 +53,36 @@
     <main>
         <!-- Статистика -->
         <div class="stats-cards">
-            <div class="stat-card">
-                <div class="stat-title">Всего пользователей</div>
-                <div class="stat-value">{{ stats.total_users }}</div>
-                <div class="stat-change">+12 за неделю</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Новых постов</div>
-                <div class="stat-value">{{ stats.new_posts }}</div>
-                <div class="stat-change">+24 за неделю</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Комментариев</div>
-                <div class="stat-value">{{ stats.comments }}</div>
-                <div class="stat-change negative">-5 за неделю</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Активность</div>
-                <div class="stat-value">{{ stats.activity }}</div>
-                <div class="stat-change">+3% за неделю</div>
-            </div>
+            <a href="{% url 'admin-analytics' %}" id="logo">
+                <div class="stat-card">
+                    <div class="stat-title">Всего пользователей</div>
+                    <div class="stat-value">{{ stats.total_users }}</div>
+                    <div class="stat-change">+{{ stats.new_users_week }} за неделю</div>
+                </div>
+            </a>
+            <a href="{% url 'admin-analytics' %}" id="logo">
+                <div class="stat-card">
+                    <div class="stat-title">Новых постов</div>
+                    <div class="stat-value">{{ stats.new_posts }}</div>
+                    <div class="stat-change">+{{ stats.new_posts }} за неделю</div>
+                </div>
+            </a>
+            <a href="{% url 'admin-analytics' %}" id="logo">
+                <div class="stat-card">
+                    <div class="stat-title">Комментариев</div>
+                    <div class="stat-value">{{ stats.comments }}</div>
+                    <div class="stat-change">
+                        +{{ stats.new_comments }} за неделю
+                    </div>
+                </div>
+            </a>
+            <!-- <a href="{% url 'admin-analytics' %}" id="logo" >
+                <div class="stat-card">
+                    <div class="stat-title">Активность</div>
+                    <div class="stat-value">{{ stats.activity }}</div>
+                    <div class="stat-change">+3% за неделю</div>
+                </div>
+            </a> -->
         </div>
 
         <!-- Последние пользователи -->
@@ -89,7 +99,6 @@
                             <th>Дата регистрации</th>
                             <th>Статус</th>
                             <th>Посты</th>
-                            <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,17 +119,6 @@
                                 {% endif %}
                             </td>
                             <td>{{ user.posts }}</td>
-                            <td>
-                                {% if user.id %}
-                                    <form method="get" action="{% url 'edit_user' user.id %}" style="display: inline;">
-                                        <button type="submit" class="action-btn">Редакт.</button>
-                                    </form>
-                                    <a href="{% url 'delete_user' user.id %}" class="action-btn delete">Удалить</a>
-                                
-                                {% else %}
-                                    <span style="color: gray;">Нет ID</span>
-                                {% endif %}
-                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -139,39 +137,44 @@
                     <thead>
                         <tr>
                             <th>Заголовок</th>
-                            <th>Автор</th>
                             <th>Дата</th>
-                            <th>Коммент.</th>
                             <th>Статус</th>
-                            <th>Действия</th>
+                            <th>Коммент.</th>
+                            <th>Автор</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for post in recent_posts %}
                         <tr>
                             <td>{{ post.title }}</td>
-                            <td>{{ post.author }}</td>
                             <td>{{ post.date }}</td>
-                            <td>{{ post.comments }}</td>
                             <td>
                                 {% if post.status == 'published' %}
-                                    <span class="status-badge status-active">Опублик.</span>
-                                {% else %}
-                                    <span class="status-badge status-pending">На проверке</span>
+                                    <span class="status-badge status-active">Опубликован</span>
+                                {% elif post.status == 'draft' %}
+                                    <span class="status-badge status-pending">Черновик</span>
+                                {% elif post.status == 'moderation' %}
+                                    <span class="status-badge status-warning">На модерации</span>
+                                {% elif post.status == 'archived' %}
+                                    <span class="status-badge status-archived">Архив</span>
+                                {% elif post.status == 'rejected' %}
+                                    <span class="status-badge status-banned">Отклонён</span>
                                 {% endif %}
                             </td>
-                            <td>
-                                <button class="action-btn">Ред.</button>
-                                <button class="action-btn delete">Удал.</button>
-                            </td>
+                            <td>{{ post.comments }}</td>
+                            <td>{{ post.author }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+        
     </main>
 
     <script src="{% static 'js/admin.js' %}"></script>
 </body>
 </html>
+
+
+

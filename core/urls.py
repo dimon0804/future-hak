@@ -1,8 +1,11 @@
 from django.urls import path
 from django.urls import include
-from .views import home
+from .views import main
+from .scheduler import start
 
 urlpatterns = [
-    path('', home, name="home"),
+    path('', main, name="main"),
+    path('start_scheduler/', start),
+      # Добавлено для маршрутизации к профилю
     # path('auth', include('auth.urls')),
 ]

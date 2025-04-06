@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="container">
+        <div class="profile-header">
+            <div class="avatar">{{ user.name|slice:":1" }}</div> <!-- Первая буква имени -->
+            <div class="user-info">
+                <h1>{{ user.name }}</h1>
+                <p>Зарегистрирован с {{ user.created_at|date:"d F Y" }}</p>
+            </div>
+        </div>
+        
+        <div class="profile-stats">
+            <div class="stat-item">
+                <div class="stat-value">{{ posts.count }}</div> <!-- Количество постов -->
+                <div class="stat-label">Постов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ comments.count }}</div> <!-- Количество комментариев -->
+                <div class="stat-label">Комментариев</div>
+            </div>
+            <!-- <div class="stat-item">
+                <div class="stat-value">{{ user.likes.count }}</div>
+                <div class="stat-label">Лайков</div>
+            </div> -->
+        </div>
+
+        <div class="badges">
+            {% for badge in user.badges.all %}
+                <div class="badge">{{ badge.name }}</div> <!-- Динамическое добавление бейджа -->
+            {% endfor %}
+        </div>
+        
+        <div class="actions">
+            <a href="{% url 'main' %}" class="action-btn mainbtn">Выйти в меню</a>
+            <a href="#" class="action-btn edit-profile">Редактировать профиль</a>
+            <a href="{% url 'logout' %}" class="action-btn logout">Выйти из аккаунта</a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>

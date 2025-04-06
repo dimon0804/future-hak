@@ -1,0 +1,290 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: #f5f7fa;
+    min-height: 100vh;
+}
+
+/* Навигационная панель */
+.navbar {
+    background: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: none;
+    border-radius: 30px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-btn:hover {
+    background: #e0e4e8;
+}
+
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+/* Заголовок страницы */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    background: #2980b9;
+}
+
+/* Плейлисты */
+.playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.playlist-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.playlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-cover {
+    height: 160px;
+    background: linear-gradient(135deg, #72b5f7 0%, #2a79c9 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+}
+
+.playlist-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.playlist-title {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.playlist-meta {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.playlist-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-grow: 1;
+    text-align: center;
+    text-decoration: none;
+}
+
+.action-btn.view {
+    background: #3498db;
+    color: white;
+    border: none;
+}
+
+.action-btn.view:hover {
+    background: #2980b9;
+}
+
+.action-btn.share {
+    background: #f8fafc;
+    color: #3498db;
+    border: 1px solid #e0e4e8;
+}
+
+.action-btn.share:hover {
+    background: #e0e4e8;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e4e8;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+
+    .playlists-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}

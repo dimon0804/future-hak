@@ -266,3 +266,115 @@ body {
     font-size: 20px;
     margin-right: 10px;
 }
+/* Общие мобильные стили для всех смартфонов */
+@media (max-width: 767px), 
+       (hover: none) and (pointer: coarse) {
+    body {
+        height: auto;
+        min-height: 100vh;
+        padding: 15px;
+        align-items: flex-start;
+        background-attachment: fixed;
+    }
+
+    .container {
+        width: 100%;
+        max-width: none;
+        padding: 30px 20px;
+        margin: 0;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .form-title {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .input-group {
+        margin-bottom: 22px;
+    }
+
+    .input-group input {
+        padding: 16px 20px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    .input-group label {
+        top: 16px;
+        left: 20px;
+        font-size: 16px;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -9px;
+        font-size: 13px;
+    }
+
+    .submit-btn {
+        padding: 16px;
+        font-size: 17px;
+        border-radius: 12px;
+    }
+
+    .additional-options {
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .remember-me {
+        font-size: 15px;
+    }
+
+    .remember-me input {
+        transform: scale(1.2);
+        margin-right: 10px;
+    }
+
+    .forgot-password a {
+        font-size: 15px;
+    }
+
+    .register-link {
+        font-size: 15px;
+        margin-top: 25px;
+    }
+
+    .decoration {
+        display: none;
+    }
+
+    /* Анимации для мобилок */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .success-message i {
+        font-size: 70px;
+    }
+
+    /* Telegram кнопка */
+    .telegram-login {
+        margin: 25px 0;
+    }
+
+    .telegram-login p::before,
+    .telegram-login p::after {
+        width: 25%;
+    }
+
+    .telegram-btn {
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+
+    .telegram-btn i {
+        font-size: 22px;
+    }
+}

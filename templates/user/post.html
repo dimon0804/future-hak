@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль автора | ScienceNews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/post.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+        <a href="{% url 'main' %}" class="logo">ScienceNews</a>
+        <button class="profile-btn">
+            <a href="{% url 'profile' %}" class="logo">
+                <div class="profile-avatar">{{ request.user.name|slice:":2"|upper }}</div>
+                <div>
+                    <span class="logo">{{ request.user.name }}</span>
+                </div>
+            </a>
+        </button>
+    </nav>
+
+    <div class="container">
+        <!-- Профиль автора -->
+        <div class="author-profile">
+            <div class="author-avatar">{{ author.name|slice:":2"|upper }}</div>
+            <div class="author-info">
+                <h1>{{ author.name }}</h1>
+                <div class="author-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ author.email }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>На сайте с {{ author.created_at|date:"d.m.Y" }}</span>
+                    </div>
+                </div>
+                <div class="author-bio">
+                    Научный журналист, специализирующийся на квантовой физике и новых технологиях. Автор более 50 научно-популярных статей в ведущих изданиях.
+                </div>
+            </div>
+        </div>
+
+        <!-- Список постов -->
+        <div class="post-list">
+            {% for post in posts %}
+            <div class="post-card">
+                <div class="post-header">
+                    <span class="post-date">{{ post.created_at|date:"d.m.Y" }}</span>
+                    <span class="post-category category-{{ post.category }}">{{ post.get_category_display }}</span>
+                </div>
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-excerpt">
+                    {{ post.content|truncatewords:20 }}
+                </p>
+                <a href="/profile/post/{{ post.id }}" class="read-more">Читать далее</a>
+            </div>
+            {% empty %}
+            <p>У этого автора пока нет постов.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/post.js' %}"></script>
+</body>
+</html>

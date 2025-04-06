@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление комментариями</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../static/admin-comments.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/admin-comments.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
@@ -14,25 +15,25 @@
     
     <!-- Боковая панель -->
     <aside>
-        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <a id="logo" href="{% url 'main' %}"><div class="logo">ScienceNews</div></a>
         <nav class="nav-menu">
-            <a href="admin.html" class="nav-item">
+            <a href="{% url 'dashboard' %}" class="nav-item">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Главная</span>
             </a>
-            <a href="admin-users.html" class="nav-item">
+            <a href="{% url 'admin_users' %}" class="nav-item">
                 <i class="fas fa-users"></i>
                 <span>Пользователи</span>
             </a>
-            <a href="admin-posts.html" class="nav-item">
+            <a href="{% url 'admin-posts' %}" class="nav-item">
                 <i class="fas fa-newspaper"></i>
                 <span>Посты</span>
             </a>
-            <a href="admin-comments.html" class="nav-item active">
+            <a href="" class="nav-item active">
                 <i class="fas fa-comments"></i>
                 <span>Комментарии</span>
             </a>
-            <a href="admin-analytics.html" class="nav-item">
+            <a href="{% url 'admin-analytics' %}" class="nav-item">
                 <i class="fas fa-chart-line"></i>
                 <span>Аналитика</span>
             </a>
@@ -43,8 +44,8 @@
     <header>
         <h1 class="admin-title">Управление комментариями</h1>
         <div class="admin-user">
-            <div class="user-avatar">АД</div>
-            <span>Администратор</span>
+            <div class="user-avatar">{{ request.user.username|slice:":2"|upper }}</div>
+            <span>{{ request.user.username }}</span>
         </div>
     </header>
 
@@ -62,19 +63,22 @@
             </div>
 
             <div class="search-filter">
-                <input type="text" class="search-input" placeholder="Поиск по содержанию или автору...">
-                <select class="filter-select">
-                    <option value="">Все статусы</option>
-                    <option value="published">Опубликованные</option>
-                    <option value="pending">На модерации</option>
-                    <option value="deleted">Удалённые</option>
-                </select>
-                <select class="filter-select">
-                    <option value="">Все посты</option>
-                    <option value="post1">Новые космические технологии</option>
-                    <option value="post2">Исследование Марса</option>
-                    <option value="post3">Спутники нового поколения</option>
-                </select>
+                <form method="GET" action="{% url 'comment_list' %}">
+                    <input type="text" name="search" class="search-input" placeholder="Поиск по содержанию или автору..." value="{{ search_query }}">
+                    <select name="status" class="filter-select">
+                        <option value="">Все статусы</option>
+                        <option value="published" {% if status = 'published' %}selected{% endif %}>Опубликованные</option>
+                        <option value="pending" {% if status = 'pending' %}selected{% endif %}>На модерации</option>
+                        <option value="deleted" {% if status = 'deleted' %}selected{% endif %}>Удалённые</option>
+                    </select>
+                    <select name="post" class="filter-select">
+                        <option value="">Все посты</option>
+                        {% for post in posts %}
+                            <option value="{{ post.id }}" {% if post_id = post.id|stringformat:"s" %}selected{% endif %}>{{ post.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Фильтровать</button>
+                </form>
             </div>
 
             <div class="table-container">
@@ -91,138 +95,68 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for comment in comments %}
                         <tr>
-                            <td>105</td>
-                            <td class="comment-content">Отличная статья! Очень познавательно и интересно написано...</td>
+                            <td>{{ comment.id }}</td>
+                            <td class="comment-content">{{ comment.content|truncatechars:50 }}</td>
                             <td>
-                                <span class="user-avatar-small">ИИ</span>
-                                Иван Иванов
+                                <span class="user-avatar-small">{{ comment.author.username|slice:":2"|upper }}</span>
+                                {{ comment.author.username }}
                             </td>
-                            <td>Новые космические технологии</td>
-                            <td>15.05.2023</td>
-                            <td><span class="status-badge status-published">Опубликован</span></td>
+                            <td>{{ comment.post.title }}</td>
+                            <td>{{ comment.created_at|date:"d.m.Y" }}</td>
+                            <td><span class="status-badge status-{{ comment.status }}">{{ comment.get_status_display }}</span></td>
                             <td>
-                                <button class="action-btn" onclick="viewComment(1)">
+                                <a href="{% url 'comment_detail' comment.id %}" class="action-btn">
                                     <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn reject">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                </a>
+                                {% if comment.status != 'published' %}
+                                    <a href="{% url 'comment_approve' comment.id %}" class="action-btn approve">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                {% endif %}
+                                {% if comment.status != 'deleted' %}
+                                    <a href="{% url 'comment_reject' comment.id %}" class="action-btn reject">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td>104</td>
-                            <td class="comment-content">А есть более подробная информация по этому вопросу? Хотелось бы...</td>
-                            <td>
-                                <span class="user-avatar-small">АП</span>
-                                Анна Петрова
-                            </td>
-                            <td>Исследование Марса</td>
-                            <td>14.05.2023</td>
-                            <td><span class="status-badge status-published">Опубликован</span></td>
-                            <td>
-                                <button class="action-btn" onclick="viewComment(2)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn reject">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
+                            <td colspan="7">Комментариев нет.</td>
                         </tr>
-                        <tr>
-                            <td>103</td>
-                            <td class="comment-content">Это полная чушь! Автор вообще разбирается в теме?!</td>
-                            <td>
-                                <span class="user-avatar-small">СС</span>
-                                Сергей Сидоров
-                            </td>
-                            <td>Спутники нового поколения</td>
-                            <td>13.05.2023</td>
-                            <td><span class="status-badge status-deleted">Удалён</span></td>
-                            <td>
-                                <button class="action-btn" onclick="viewComment(3)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn approve">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>102</td>
-                            <td class="comment-content">Спасибо за полезную информацию, очень пригодилось в моём исследовании...</td>
-                            <td>
-                                <span class="user-avatar-small">ММ</span>
-                                Мария Морозова
-                            </td>
-                            <td>Новые космические технологии</td>
-                            <td>12.05.2023</td>
-                            <td><span class="status-badge status-published">Опубликован</span></td>
-                            <td>
-                                <button class="action-btn" onclick="viewComment(4)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn reject">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>101</td>
-                            <td class="comment-content">Интересная точка зрения, но я бы поспорил с некоторыми утверждениями...</td>
-                            <td>
-                                <span class="user-avatar-small">АК</span>
-                                Алексей Козлов
-                            </td>
-                            <td>Исследование Марса</td>
-                            <td>11.05.2023</td>
-                            <td><span class="status-badge status-pending">На модерации</span></td>
-                            <td>
-                                <button class="action-btn" onclick="viewComment(5)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn approve">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button class="action-btn reject">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
 
+            <!-- Пагинация (можно добавить позже с django.core.paginator) -->
             <div class="pagination">
                 <div class="page-btn active">1</div>
-                <div class="page-btn">2</div>
-                <div class="page-btn">3</div>
-                <div class="page-btn">...</                <div class="page-btn">10</div>
             </div>
         </div>
     </main>
 
-    <!-- Модальное окно просмотра комментария -->
-    <div class="modal" id="commentModal">
+    <!-- Модальное окно -->
+    <div class="modal" id="commentModal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Комментарий #<span id="commentId"></span></h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <button class="modal-close" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
                 <div class="comment-meta">
-                    <div class="user-avatar-small" id="commentAvatar">ИИ</div>
+                    <div class="user-avatar-small" id="commentAvatar"></div>
                     <div>
-                        <div class="comment-author" id="commentAuthor">Иван Иванов</div>
-                        <div class="comment-date" id="commentDate">15.05.2023 14:30</div>
+                        <div class="comment-author" id="commentAuthor"></div>
+                        <div class="comment-date" id="commentDate"></div>
                     </div>
                 </div>
                 <div>
-                    <strong>Пост:</strong> <span id="commentPost">Новые космические технологии</span>
+                    <strong>Пост:</strong> <span id="commentPost"></span>
                 </div>
-                <div class="comment-text" id="commentText">
-                    Отличная статья! Очень познавательно и интересно написано. Особенно понравился раздел про новые технологии двигателей. Хотелось бы увидеть больше технических деталей в следующих публикациях.
-                </div>
+                <div class="comment-text" id="commentText"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal()">Закрыть</button>
@@ -237,7 +171,19 @@
             </div>
         </div>
     </div>
-
-    <script src="../static/admin-comments.js"></script>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a class="page-btn" href="?page=1"><<</a>
+            <a class="page-btn" href="?page={{ page_obj.previous_page_number }}"><</a>
+        {% endif %}
+        
+        <span class="page-btn active">{{ page_obj.number }}</span>
+        
+        {% if page_obj.has_next %}
+            <a class="page-btn" href="?page={{ page_obj.next_page_number }}">></a>
+            <a class="page-btn" href="?page={{ page_obj.paginator.num_pages }}">>></a>
+        {% endif %}
+    </div>
+    <script src="{% static 'js/admin-comments.js' %}"></script>
 </body>
 </html>

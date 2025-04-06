@@ -20,13 +20,11 @@
                 <div class="success-message">
                     <i class="fas fa-check-circle"></i>
                     <h2>Вход выполнен успешно!</h2>
-                    <p>Перенаправляем вас в личный кабинет...</p>
+                    <p>Перенаправляем вас на главную страницу..</p>
                 </div>
-                <script>
-                    setTimeout(() => {
-                        window.location.href = "{% url 'home' %}";
-                    }, 2000);
-                </script>
+                <script>setTimeout(() => {
+                    window.location.href = "{% url 'main' %}";
+                }, 1500);</script>
             {% else %}
                 <form method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
@@ -55,6 +53,9 @@
             <!-- Ссылка на регистрацию -->
             <div class="register-link">
                 Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+            </div>
+            <div class="register-link">
+                Вернуться в <a href="{% url 'main' %}">главное меню</a>
             </div>
         </div>
         {% if messages %}

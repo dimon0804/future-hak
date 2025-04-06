@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         
         // Здесь можно добавить редирект после успешного входа
         setTimeout(() => {
-            window.location.href = "profile.html"; // Замените на нужный URL
+            window.location.href = "{% url 'main' %}"; // Замените на нужный URL
         }, 2000);
     }, 500);
 });
@@ -36,3 +36,6 @@ document.querySelector('.telegram-btn').addEventListener('click', function(e) {
     // Здесь можно добавить логику входа через Telegram
     alert('Функция входа через Telegram будет реализована здесь');
 });
+setTimeout(() => {
+    window.location.href = "{% url 'main' %}";
+}, 2000);

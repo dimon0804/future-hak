@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать пост</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="{% static 'css/redact.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Создать новый пост</h1>
+            <a href="{% url 'main' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Назад
+            </a>
+        </div>
+        
+        <form class="post-form" id="postForm" method="post" enctype="multipart/form-data" action="{% url 'add_post' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="postTitle" class="form-label">Заголовок поста</label>
+                <input type="text" name="title" id="postTitle" class="form-input" placeholder="Введите заголовок" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="postContent" class="form-label">Содержание поста</label>
+                <textarea name="content" id="postContent" class="form-textarea" placeholder="Напишите ваш пост здесь..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Добавить изображение</label>
+                <div class="file-upload">
+                    <input type="file" name="image" id="postImage" class="file-upload-input" accept="image/*">
+                    <label for="postImage" class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                        <span class="file-upload-text">Перетащите изображение сюда или <strong>нажмите для выбора</strong></span>
+                    </label>
+                </div>
+                <div class="preview-container" id="previewContainer">
+                    <img src="" alt="Превью" class="preview-image" id="previewImage">
+                    <div class="remove-image" id="removeImage">
+                        <i class="fas fa-trash"></i>
+                        Удалить изображение
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="postCategory" class="form-label">Категория</label>
+                <select name="category" id="postCategory" class="form-select" required>
+                    <option value="" disabled selected>Выберите категорию</option>
+                    <option value="technology">Технологии</option>
+                    <option value="science">Наука</option>
+                    <option value="art">Искусство</option>
+                    <option value="travel">Путешествия</option>
+                    <option value="other">Другое</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="postTags" class="form-label">Теги (через запятую)</label>
+                <input type="text" name="tags" id="postTags" class="form-input" placeholder="например, космос, наука, технологии">
+                <div class="tags-container" id="tagsContainer"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Опубликовать пост</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <h2>Пост успешно опубликован!</h2>
+            <p>Ваш пост теперь виден другим пользователям.</p>
+        </div>
+    </div>
+
+    <script src="{% static 'js/redact.js' %}"></script>
+</body>
+</html>

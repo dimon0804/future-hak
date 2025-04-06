@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аналитика</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../static/admin-analytics.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/admin-analytics.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
@@ -14,25 +15,25 @@
     
     <!-- Боковая панель -->
     <aside>
-        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <a id="logo" href="{% url 'main' %}"><div class="logo">ScienceNews</div></a>
         <nav class="nav-menu">
-            <a href="admin.html" class="nav-item">
+            <a href="{% url 'dashboard' %}" class="nav-item">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Главная</span>
             </a>
-            <a href="admin-users.html" class="nav-item">
+            <a href="{% url 'admin_users' %}" class="nav-item">
                 <i class="fas fa-users"></i>
                 <span>Пользователи</span>
             </a>
-            <a href="admin-posts.html" class="nav-item">
+            <a href="{% url 'admin-posts' %}" class="nav-item">
                 <i class="fas fa-newspaper"></i>
                 <span>Посты</span>
             </a>
-            <a href="admin-comments.html" class="nav-item">
+            <a href="{% url 'admin-comments' %}" class="nav-item">
                 <i class="fas fa-comments"></i>
                 <span>Комментарии</span>
             </a>
-            <a href="admin-analytics.html" class="nav-item active">
+            <a href="#" class="nav-item active">
                 <i class="fas fa-chart-line"></i>
                 <span>Аналитика</span>
             </a>

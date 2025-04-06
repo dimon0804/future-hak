@@ -17,7 +17,7 @@ import time
 def login_view(request):
     if request.user.is_authenticated:
         # return render(request, 'auth/login.html', {'show_success': True})
-        return redirect('home')  # Перенаправление, если пользователь уже авторизован
+        return redirect('main')  # Перенаправление, если пользователь уже авторизован
 
     if request.method == 'POST':
         email = request.POST.get('email')

@@ -149,6 +149,7 @@ main {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
     border: none;
+    height: 46px;
 }
 
 .btn-primary:hover {
@@ -189,6 +190,7 @@ main {
     border: 2px solid #e0e4e8;
     border-radius: 5px;
     font-size: 14px;
+    width: 1000px;
 }
 
 .search-input:focus {

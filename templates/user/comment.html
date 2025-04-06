@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | ScienceNews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'main' %}" class="logo">ScienceNews</a>
+        <button class="profile-btn">
+            <div class="profile-avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+            <span>{{ request.user.get_full_name }}</span>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div class="full-post">
+            <div class="post-header">
+                <span class="post-date">{{ post.created_at|date:"d.m.Y" }}</span>
+                <span class="post-category category-{{ post.category|lower }}">{{ post.get_category_display }}</span>
+            </div>
+            <h1 class="post-title">{{ post.title }}</h1>
+            <div class="post-author">
+                <div class="author-avatar-small">
+                    {{ post.author.name|first }}{{ post.author.last_name|first }}
+                </div>
+                <span class="author-name">{{ post.author.name }}</span>
+            </div>
+            <div class="post-content">
+                {{ post.content|linebreaks }}
+            </div>
+
+            <div class="post-actions">
+                <button class="share-btn"><i class="fas fa-share-alt"></i> Поделиться</button>
+                <button class="bookmark-btn"><i class="far fa-bookmark"></i> Сохранить</button>
+            </div>
+        </div>
+
+        <div class="post-chat">
+            <h2 class="chat-title">Обсуждение статьи</h2>
+
+            <div class="chat-messages">
+                {% for comment in comments %}
+                    <div class="message">
+                        <div class="message-avatar">
+                            {{ comment.author.first_name|first }}{{ comment.author.last_name|first }}
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-author">{{ comment.author.get_full_name }}</span>
+                                <span class="message-time">{{ comment.created_at|date:"d.m.Y, H:i" }}</span>
+                            </div>
+                            <p class="message-text">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Будьте первым, кто прокомментирует эту статью.</p>
+                {% endfor %}
+            </div>
+
+            <form class="chat-input" method="post">
+                {% csrf_token %}
+                <textarea name="content" placeholder="Напишите ваше сообщение..." required></textarea>
+                <button type="submit" class="send-btn">
+                    Отправить <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/comment.js' %}"></script>
+</body>
+</html>

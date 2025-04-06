@@ -16,6 +16,55 @@ body {
         "sidebar main";
 }
 
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 400px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    background: none;
+    border: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
 /* Шапка */
 header {
     grid-area: header;
@@ -350,3 +399,4 @@ tr:nth-child(5) { animation-delay: 0.5s; }
         display: none;
     }
 }
+

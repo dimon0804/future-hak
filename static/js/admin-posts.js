@@ -129,3 +129,128 @@
          });
      });
  });
+
+ // Удалите дублирующийся код и оставьте только это:
+postForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(postForm);
+    
+    try {
+        const response = await fetch('/create-post/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        });
+        
+        if (response.ok) {
+            location.reload();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+ document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('postModal');
+    const form = document.getElementById('postForm');
+    
+    // Открытие модалки
+    document.getElementById('addPostBtn').addEventListener('click', () => {
+        modal.style.display = 'block';
+        form.reset();
+    });
+    
+    // Закрытие модалки
+    document.getElementById('modalClose').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    // Отправка формы
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('/create-post/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                }
+            });
+            
+            if (response.ok) {
+                location.reload(); // Обновляем таблицу
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+    
+    // Функция для получения CSRF токена
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.action-btn.delete');
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const postId = btn.dataset.id;
+            if (confirm('Удалить пост?')) {
+                fetch(`/admin/posts/delete/${postId}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) location.reload();
+                    });
+            }
+        });
+    });
+
+    const searchInput = document.querySelector('.search-input');
+    const statusSelect = document.querySelectorAll('.filter-select')[0];
+    const categorySelect = document.querySelectorAll('.filter-select')[1];
+
+    function updateFilter() {
+        const query = searchInput.value;
+        const status = statusSelect.value;
+        const category = categorySelect.value;
+        let url = `/admin/posts/?q=${query}&status=${status}&category=${category}`;
+        window.location.href = url;
+    }
+
+    searchInput.addEventListener('change', updateFilter);
+    statusSelect.addEventListener('change', updateFilter);
+    categorySelect.addEventListener('change', updateFilter);
+
+    document.querySelector('.btn.btn-outline').addEventListener('click', () => {
+        window.location.href = '/admin/posts/export/';
+    });
+
+    document.getElementById('addPostBtn').addEventListener('click', () => {
+        document.getElementById('postModal').style.display = 'block';
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        document.getElementById('postModal').style.display = 'none';
+    });
+
+    document.getElementById('modalClose').addEventListener('click', () => {
+        document.getElementById('postModal').style.display = 'none';
+    });
+});

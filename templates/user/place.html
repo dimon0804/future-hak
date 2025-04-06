@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои плейлисты | ScienceNews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/place.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+        <a href="main.html" class="logo">ScienceNews</a>
+        <button class="profile-btn">
+            <a href="profile.html" class="logo">
+            <div class="profile-avatar">ИИ</div>
+            <span>Иван Иванов</span>
+            </a>
+        </button>
+    </nav>
+
+    <div class="container">
+        <!-- Заголовок страницы -->
+        <div class="page-header">
+            <h1 class="page-title">Мои плейлисты</h1>
+            <button class="btn" id="createPlaylistBtn">
+                <i class="fas fa-plus"></i>
+                Создать плейлист
+            </button>
+        </div>
+
+        <!-- Список плейлистов -->
+        <div class="playlists-grid">
+            <!-- Плейлист 1 -->
+            <div class="playlist-card">
+                <div class="playlist-cover">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <div class="playlist-info">
+                    <h3 class="playlist-title">Квантовая физика</h3>
+                    <div class="playlist-meta">5 статей · Последнее обновление: 15.05.2023</div>
+                    <div class="playlist-actions">
+                        <a href="#" class="action-btn view">
+                            <i class="fas fa-eye"></i>
+                            Просмотр
+                        </a>
+                        <a href="#" class="action-btn share">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Плейлист 2 -->
+            <div class="playlist-card">
+                <div class="playlist-cover">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <div class="playlist-info">
+                    <h3 class="playlist-title">Генетика будущего</h3>
+                    <div class="playlist-meta">8 статей · Последнее обновление: 10.05.2023</div>
+                    <div class="playlist-actions">
+                        <a href="#" class="action-btn view">
+                            <i class="fas fa-eye"></i>
+                            Просмотр
+                        </a>
+                        <a href="#" class="action-btn share">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Плейлист 3 -->
+            <div class="playlist-card">
+                <div class="playlist-cover">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="playlist-info">
+                    <h3 class="playlist-title">Космические исследования</h3>
+                    <div class="playlist-meta">12 статей · Последнее обновление: 05.05.2023</div>
+                    <div class="playlist-actions">
+                        <a href="#" class="action-btn view">
+                            <i class="fas fa-eye"></i>
+                            Просмотр
+                        </a>
+                        <a href="#" class="action-btn share">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно создания плейлиста -->
+    <div class="modal" id="playlistModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Создать новый плейлист</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <form id="playlistForm">
+                <div class="form-group">
+                    <label class="form-label">Название плейлиста</label>
+                    <input type="text" class="form-control" placeholder="Например: Квантовая физика" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Описание (необязательно)</label>
+                    <textarea class="form-control" rows="3" placeholder="Краткое описание вашего плейлиста"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Обложка</label>
+                    <select class="form-control">
+                        <option value="atom"><i class="fas fa-atom"></i> Атом</option>
+                        <option value="dna"><i class="fas fa-dna"></i> ДНК</option>
+                        <option value="rocket"><i class="fas fa-rocket"></i> Ракета</option>
+                        <option value="flask"><i class="fas fa-flask"></i> Колба</option>
+                        <option value="microscope"><i class="fas fa-microscope"></i> Микроскоп</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="action-btn share" id="cancelBtn">Отмена</button>
+                    <button type="submit" class="action-btn view">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/place.js' %}"></script>
+</body>
+</html>

@@ -15,25 +15,25 @@
     
     <!-- Боковая панель -->
     <aside>
-        <a id="logo" href="main.html"><div class="logo">ScienceNews</div></a>
+        <a id="logo" href="{% url 'main' %}"><div class="logo">ScienceNews</div></a>
         <nav class="nav-menu">
             <a href="{% url 'dashboard' %}" class="nav-item">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Главная</span>
             </a>
-            <a href="admin-users.html" class="nav-item active">
+            <a href="" class="nav-item active">
                 <i class="fas fa-users"></i>
                 <span>Пользователи</span>
             </a>
-            <a href="admin-posts.html" class="nav-item">
+            <a href="{% url 'admin-posts' %}" class="nav-item">
                 <i class="fas fa-newspaper"></i>
                 <span>Посты</span>
             </a>
-            <a href="admin-comments.html" class="nav-item">
+            <a href="{% url 'admin-comments' %}" class="nav-item">
                 <i class="fas fa-comments"></i>
                 <span>Комментарии</span>
             </a>
-            <a href="admin-analytics.html" class="nav-item">
+            <a href="{% url 'admin-analytics' %}" class="nav-item">
                 <i class="fas fa-chart-line"></i>
                 <span>Аналитика</span>
             </a>
@@ -58,10 +58,11 @@
                     <button class="btn btn-primary" id="addUserBtn">
                         <i class="fas fa-plus"></i>
                         Добавить пользователя
-                    </button>
-                    <button class="btn btn-outline">
-                        <i class="fas fa-download"></i>
-                        Экспорт
+                    </button> 
+                    <a href="{% url 'export_users' %}" class="btn btn-outline">
+                        <i class="fas fa-download"></i>Экспорт
+                    </a>
+                        
                     </button>
                 </div>
             </div>
@@ -112,7 +113,12 @@
                                 <td><span class="status-badge {% if user.is_active == 'active' %}status-active{% elif user.is_active == 'banned' %}status-banned{% else %}status-pending{% endif %}">{{ user.get_is_active_display }}</span></td>
                                 <td>{{ user.created_at|date:"d.m.Y" }}</td>
                                 <td>
-                                    <button class="action-btn edit" data-id="{{ user.id }}" data-name="{{ user.name }}" data-email="{{ user.email }}" data-role="{{ user.role }}" data-status="{{ user.is_active }}">
+                                    <button class="action-btn edit" 
+                                        data-id="{{ user.id }}" 
+                                        data-name="{{ user.name }}" 
+                                        data-email="{{ user.email }}" 
+                                        data-role="{{ user.role }}" 
+                                        data-status="{{ user.is_active }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <a href="{% url 'delete_user' user.id %}" class="action-btn delete">Удалить</a>
@@ -127,13 +133,14 @@
                                     </div>
                                     <form id="userForm">
                                         <input type="hidden" id="userId"> <!-- Скрытое поле для ID пользователя -->
+                            
                                         <div class="form-group">
                                             <label class="form-label">Имя</label>
                                             <input type="text" class="form-control" id="userName" required>
                                         </div>
                                         <div class="form-group">
-                                            <label class="form-label">Фамилия</label>
-                                            <input type="text" class="form-control" id="userLastName" required>
+                                            <label class="form-label">Имя пользователя (логин)</label>
+                                            <input type="text" class="form-control" id="userUsername" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Email</label>
@@ -167,6 +174,7 @@
                                     </form>
                                 </div>
                             </div>
+                            
                         {% endfor %}
                     </tbody>
                 </table>
@@ -174,15 +182,15 @@
 
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a class="page-btn" href="?page=1">&laquo; Первая</a>
-                    <a class="page-btn" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                    <a class="page-btn" href="?page=1"><<</a>
+                    <a class="page-btn" href="?page={{ page_obj.previous_page_number }}"><</a>
                 {% endif %}
                 
                 <span class="page-btn active">{{ page_obj.number }}</span>
                 
                 {% if page_obj.has_next %}
-                    <a class="page-btn" href="?page={{ page_obj.next_page_number }}">Вперед</a>
-                    <a class="page-btn" href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+                    <a class="page-btn" href="?page={{ page_obj.next_page_number }}">></a>
+                    <a class="page-btn" href="?page={{ page_obj.paginator.num_pages }}">>></a>
                 {% endif %}
             </div>
         </div>

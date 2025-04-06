@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Плейлист | ScienceNews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/list-place.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+        <a href="main.html" class="logo">ScienceNews</a>
+        <button class="profile-btn">
+            <a href="profile.html" class="logo">
+                <div class="profile-avatar">ИИ</div>
+                <span>Иван Иванов</span>
+            </a>
+        </button>
+    </nav>
+
+    <div class="container">
+        {% for playlist_data in playlist_data %}
+            <!-- Шапка плейлиста -->
+            <div class="playlist-header">
+                <div class="playlist-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h1 class="playlist-title">{{ playlist_data.playlist.title }}</h1>
+                <div class="playlist-meta">{{ playlist_data.articles.count }} статей · Создан {{ playlist_data.playlist.created_at|date:"d.m.Y" }}</div>
+                <p class="playlist-description">
+                    {{ playlist_data.playlist.description }}
+                </p>
+                <div class="playlist-actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-edit"></i>
+                        Редактировать
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-share-alt"></i>
+                        Поделиться
+                    </button>
+                </div>
+            </div>
+
+            <!-- Список статей -->
+            <div class="articles-list">
+                <h2 class="section-title">
+                    <i class="fas fa-newspaper"></i>
+                    Статьи в плейлисте
+                </h2>
+
+                {% for article in playlist_data.articles %}
+                    <div class="article-card">
+                        <div class="article-header">
+                            <span class="article-date">{{ article.created_at|date:"d.m.Y" }}</span>
+                            <span class="article-category category-physics">{{ article.category }}</span>
+                        </div>
+                        <h3 class="article-title">{{ article.title }}</h3>
+                        <p class="article-excerpt">
+                            {{ article.content|truncatewords:20 }}
+                        </p>
+                        <div class="article-actions">
+                            <div class="article-author">
+                                <div class="author-avatar">{{ article.author.name|slice:":2" }}</div>
+                                <span>{{ article.author.name }}</span>
+                            </div>
+                            <a href="{% url 'post_detail' article.id %}" class="read-more">Читать статью</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>В этом плейлисте нет статей.</p>
+                {% endfor %}
+            </div>
+        {% empty %}
+            <p>У вас нет плейлистов.</p>
+        {% endfor %}
+    </div>
+
+    <script src="{% static 'js/list-place.js' %}"></script>
+</body>
+</html>

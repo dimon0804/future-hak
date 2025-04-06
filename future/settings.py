@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'dashboard',
+    'user',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="logo">ScienceNews</div>
+        <div class="settings-option" id="darkModeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Тёмная тема</span>
+        </div>
+        {% if user.is_authenticated %}
+        <!-- Меню пользователя (видимо когда пользователь авторизован) -->
+        <div class="user-menu" id="userMenu">
+            {% if user.is_admin %}
+                <a href="{% url 'dashboard:index' %}" class="admin-btn" title="Админ-панель">
+                    <i class="fas fa-tools"></i>
+                </a>
+            {% endif %}
+            <button class="settings-btn" id="settingsBtn">
+                <i class="fas fa-cog"></i>
+            </button>
+            <div class="user-avatar">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name|first }}{{ user.last_name|first }}
+                {% else %}
+                    {{ user.username|first|upper }}
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Меню настроек -->
+        <div class="settings-menu" id="settingsMenu">
+            <div class="settings-option">
+                <a href="{% url 'profile' %}">
+                    <i class="fas fa-user"></i>
+                    <span>Профиль</span>
+                </a>
+            </div>
+            
+        </div>
+    {% else %}
+        <!-- Кнопки входа/регистрации (видимы когда пользователь не авторизован) -->
+        <div class="auth-buttons" id="authButtons">
+            <a href="{% url 'login' %}" class="auth-btn login-btn">Вход</a>
+            <a href="{% url 'register' %}" class="auth-btn register-btn">Регистрация</a>
+        </div>
+    {% endif %}
+</header>
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="widget date-time">
+            <div class="widget-title">Дата и время</div>
+            <div class="time" id="currentTime">14:30</div>
+            <div class="date" id="currentDate">15 мая 2023, понедельник</div>
+        </div>
+    </aside>
+    <!-- Основное содержимое -->
+    <main>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Поиск объявлений...">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="ads-container">
+            {% for post in posts %}
+    <div class="ad-card">
+        {% if post.image %}
+            <img src="{{ post.image }}" alt="Объявление" class="ad-image">
+                    {% else %}
+                        <img src="{% static 'images/def.png' %}" 
+                            data-dark-src="{% static 'images/def-dark.png' %}" 
+                            alt="Объявление по умолчанию" 
+                            class="ad-image default-image">
+                    {% endif %}
+                    <div class="ad-content">
+                        <!-- /profile/post/{{ post.id }} -->
+                        <h3 class="ad-title">
+                            <a href="{% url 'post_detail' post.id %}" style="text-decoration: none;">  {{ post.title }}</a>
+                        </h3>
+                        <div class="ad-author">
+                            <img src="{% static 'images/avatar.png' %}" alt="Автор" class="author-avatar">
+                            <!-- /profile/list/{{ post.author.id }} -->
+                            <a href="{% url 'author' post.author.id %}" style="text-decoration: none;" class="author-name">{{ post.author.name }}</a>
+                        </div>
+                        <div class="ad-meta">
+                            <span class="ad-date">{{ post.created_at|date:"d.m.Y" }}</span> |
+                            <span class="ad-category">{{ post.tags }}</span> |
+                            <span class="ad-source">{{ post.source_site }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Посты не найдены.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- Панель фильтров -->
+    <aside class="filters">
+        <div class="filter-section">
+            <h3 class="filter-title">Дата</h3>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="radio" id="today" name="date" checked>
+                    <label for="today">Сегодня</label>
+                </div>
+                <div class="filter-option">
+                    <input type="radio" id="week" name="date">
+                    <label for="week">На этой неделе</label>
+                </div>
+                <div class="filter-option">
+                    <input type="radio" id="month" name="date">
+                    <label for="month">В этом месяце</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <h3 class="filter-title">Категории</h3>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="checkbox" id="space" checked>
+                    <label for="space">Космические</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="tech">
+                    <label for="tech">Технологии</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="chemistry">
+                    <label for="chemistry">Химия</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="physics">
+                    <label for="physics">Физика</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="byology">
+                    <label for="byology">Биология</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="other">
+                    <label for="other">Другое</label>
+                </div>
+            </div>
+        </div>
+        <div class="filter-section">
+            <h3 class="filter-title">Сайты</h3>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="checkbox" id="rnf" checked>
+                    <label for="rnf">РНФ</label>
+                </div>
+                <!-- <div class="filter-option">
+                    <input type="checkbox" id="science_rf" checked>
+                    <label for="science_rf">Наука.рф</label>
+                </div> -->
+                <div class="filter-option">
+                    <input type="checkbox" id="elibrary" checked>
+                    <label for="elibrary">eLibrary</label>
+                </div>
+                <!-- <div class="filter-option">
+                    <input type="checkbox" id="sciencedirect" checked>
+                    <label for="sciencedirect">ScienceDirect</label>
+                </div> -->
+                <!-- <div class="filter-option">
+                    <input type="checkbox" id="ieee" checked>
+                    <label for="ieee">IEEE</label>
+                </div> -->
+                <!-- <div class="filter-option">
+                    <input type="checkbox" id="scopus" checked>
+                    <label for="scopus">Scopus</label>
+                </div> -->
+                <div class="filter-option">
+                    <input type="checkbox" id="sciencenews" checked>
+                    <label for="sciencenews">ScienceNews</label>
+                </div>
+            </div>       
+        </div>
+        <button type="submit" class="subbtn">Применить</button>
+    </aside>
+
+    <!-- Подвал -->
+    <footer>
+        <p class="footer-text">© 2025 ScienceNews. Все права защищены. Сайт соответствует всем нормам и требованиям.</p>
+        <div class="app-links">
+            <a href="#" class="app-link">
+                <i class="fab fa-android"></i>
+                <span>Android приложение</span>
+            </a>
+            <a href="#" class="app-link">
+                <i class="fas fa-gamepad"></i>
+                <span>Android игра</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
