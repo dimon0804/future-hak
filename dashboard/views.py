@@ -485,39 +485,38 @@ def comment_detail(request, comment_id):
 from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta
-from .models import Post  # Убедитесь, что импортировали Category
+from .models import Post
 
 def filter_posts(request):
     posts = Post.objects.all()
+    
+    # Получаем параметры фильтрации
     date_filter = request.GET.get('date', '')
     categories = request.GET.getlist('category')
     sites = request.GET.getlist('site')
     
     # Фильтрация по дате
-    if date_filter:
-        today = timezone.now().date()
-        if date_filter == 'today':
-            posts = posts.filter(created_at__date=today)
-        elif date_filter == 'week':
-            start_of_week = today - timedelta(days=today.weekday())
-            posts = posts.filter(created_at__date__gte=start_of_week)
-        elif date_filter == 'month':
-            start_of_month = today.replace(day=1)
-            posts = posts.filter(created_at__date__gte=start_of_month)
+    if date_filter == 'today':
+        posts = posts.filter(created_at__date=timezone.now().date())
+    elif date_filter == 'week':
+        week_ago = timezone.now() - timedelta(days=7)
+        posts = posts.filter(created_at__gte=week_ago)
+    elif date_filter == 'month':
+        month_ago = timezone.now() - timedelta(days=30)
+        posts = posts.filter(created_at__gte=month_ago)
     
     # Фильтрация по категориям
     if categories:
-        posts = posts.filter(category=categories)
+        posts = posts.filter(category__in=categories)
     
     # Фильтрация по сайтам
     if sites:
-        posts = posts.filter(site=sites)  # Предполагаем поле site в модели Post
+        posts = posts.filter(site__in=sites)
     
     context = {
         'posts': posts,
         'selected_date': date_filter,
         'selected_categories': categories,
         'selected_sites': sites,
-        'categories': Category.objects.all(),  # Раскомментируйте, если используете
     }
-    return render(request, 'your_template.html', context)
+    return render(request, 'posts/list.html', context)
